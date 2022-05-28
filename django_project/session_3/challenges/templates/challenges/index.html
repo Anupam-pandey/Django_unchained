@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{%block page_title%}
+  All my challenges
+  {% endblock %}
+
+{%block body_content%}
+{% include "challenges/includes/header.html" with my_active_page="index"%}
+    {% for month in months %}
+        <li><a href ="{% url "my_challenge_function" month_param=month%}" >{{ month | title }}</a> </li> 
+    {% endfor %}
+    {% endblock %}
+    <!-- adding django filters -->

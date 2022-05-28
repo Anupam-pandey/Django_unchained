@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{%block page_title%}
+monthy challenges
+{% endblock %}
+{%block body_content%}
+{% include "challenges/includes/header.html"  with my_active_page="challenges" %}
+      <h1>{{ html_month }} </h1>
+      {%if html_text is not None%}
+    <h2>{{ html_text | title }} </h2> 
+    {%else%}
+    <h2>no tasks</h2> 
+    {% endif %}
+    <!-- adding django filters -->
+    {% endblock %}

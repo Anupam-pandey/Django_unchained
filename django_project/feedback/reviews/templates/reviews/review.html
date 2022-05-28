@@ -1,0 +1,48 @@
+{% extends 'reviews/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
+        your Review    
+    {% endblock title %}
+
+
+    <link rel="stylesheet" href="{% static "reviews/styles.css" %}">
+</head>
+{% block content %}
+    <form action="/", method="post">
+    {% csrf_token %}
+        {% comment %} {% if has_error %}
+            <h2> please enter the correct user name</h2>
+        {% endif %}
+        <label for="username">your name</label>
+        <input id= "username" name="username" type="text"> {% endcomment %}
+        {% comment %} {{ form}} {% endcomment %}
+       
+        {% comment %} <div class = "form-control {% if form.user_name.errors%}errors {% endif %}">
+        {{ form.user_name.label_tag}}
+        {{ form.user_name}}
+        {{ form.user_name.errors}}
+        {{ form.review_text.label_tag}}
+        {{form.review_text}}
+        {{ form.rating.label_tag}}
+        {{form.rating}}
+        </div> {% endcomment %}
+
+        {% for field in form %}
+        <div class = "form-control {% if field.errors%}errors {% endif %}">
+        {{ field.label_tag}}
+        {{ field}}
+        {{ field.errors}}
+        </div>
+        
+        {% endfor %}
+        <button type="submit">send</button>
+    
+    </form>
+{% endblock content %}
+</html>

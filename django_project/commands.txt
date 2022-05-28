@@ -1,0 +1,107 @@
+
+
+- django-admin startproject <project name> to create a project
+- python3 manage.py runserver  to start a server
+- python3 manage.py startapp <app name > to create a new apps/modules
+- python3 manage.py makemigrations  to create a migration file
+- python3 manage.py migrate  to run migrate file
+- python3 manage.py shell  to run / play with db
+{	
+	from book_outlet.models import Book
+	harry_potter = Book(title="part 1", rating=5)
+	harry_potter.save()
+
+	lotr = Book(title="part 1", rating=4)
+	lotr.save()
+
+	Book.objects.all()
+	<QuerySet [<Book: Book object (1)>, <Book: Book object (2)>]>
+	Book.objects.all()[0].title
+	'part 1'
+
+	hp = Book.objects.all()[0]
+	hp.author = "jk rowling"
+	hp.author = True
+	hp.save()
+
+	hp.delete()
+	Book.objects.create(title="spider-man",rating=3,author="stan lee" , is_best_seller="True")
+
+	Book.objects.get(title="aag") # for single result
+
+	 Book.objects.filter(title="part 1") # for multiple result
+	<QuerySet [<Book: jk rowling True part 1 5>, <Book: anupam True part 1 4>]>
+
+	Book.objects.filter(title="part 1", rating=4) # title= part 1 and rating = 4
+	<QuerySet [<Book: anupam True part 1 4>]>
+
+	Book.objects.filter( rating__lt=4) # lower than 
+	<QuerySet [<Book: stan lee True spider-man 3>, <Book: RGV False aag 1>]>
+	Book.objects.filter( rating__lte=4) # lower than or equal
+	<QuerySet [<Book: anupam True part 1 4>, <Book: stan lee True spider-man 3>, <Book: RGV False aag 1>]>
+	Book.objects.filter( rating__lte=4 , title__contains="part")
+	<QuerySet [<Book: anupam True part 1 4>]>
+
+
+
+	from django.db.models import Q # for OR operator
+	Book.objects.filter( Q(rating__lte=4) | Q( title__contains="part"))
+	<QuerySet [<Book: jk rowling True part 1 5>, <Book: anupam True part 1 4>, <Book: stan lee True spider-man 3>, <Book: RGV False aag 1>]>
+
+
+
+	Book.objects.filter( Q(rating__lte=4) | Q( title__contains="part") , author="anupam") # mixing AND and OR
+	<QuerySet [<Book: anupam True part 1 4>]>
+	Book.objects.filter(author="anupam",Q(rating__lte=4) | Q( title__contains="part")) # expected
+  	File "<console>", line 1
+	SyntaxError: positional argument follows keyword argument
+
+
+
+	from book_outlet.models import Book,Author
+	jk = Author(first_name="J.K", last_name="rowling")
+	jk.save()
+	hp1 = Book(title="harry potter 1", rating=5, author=jk,is_best_seller=True, slug="harry-potter-1")
+	hp1.save()
+	Book.objects.all()
+	<QuerySet [<Book: Author object (1), harry-potter-1 ,True ,harry potter 1 ,5>]>
+		hp1.author.first_name
+	'J.K'
+
+
+
+	books_by_rowing = Book.objects.filter(author__last_name="rowling")
+	books_by_rowing
+	<QuerySet [<Book: Author object (1), harry-potter-1 ,True ,harry potter 1 ,5>]>
+
+
+	books_by_rowing = Book.objects.filter(author__last_name__contains="ling")
+	books_by_rowing
+	<QuerySet [<Book: Author object (1), harry-potter-1 ,True ,harry potter 1 ,5>]>
+
+
+	jkr = Author.objects.get(first_name = "J.K")
+	jkr
+	<Author: Author object (1)>
+	jkr.book_set.get(rating=5)
+	<Book: Author object (1), harry-potter-1 ,True ,harry potter 1 ,5>
+
+	 many to many
+	germ = Countries(name = "germany",code= "de")
+	germ.save()
+	row1.published_countries.add(germ)
+	row1.save()
+	Book.objects.all()[0].published_countries.all() //manytomany can access via only .all and NOT.objects.all
+	cnt = Countries.objects.all()[0]
+	cnt.book_set.all()
+	<QuerySet [<Book: J.K  rowling, harry-potter-1 ,True ,harry potter 1 ,5>]>
+
+}
+
+
+
+path : https://github.com/academind/django-practical-guide-course-code/tree/urls-views-01-adding-a-first-url-and-view
+
+
+
+

@@ -1,0 +1,22 @@
+{% extends 'book_outlet/base.html' %}
+
+{% block  title %}
+All books
+
+{% endblock  %}
+
+
+{% block content %}
+    <ul>
+        {% for book in books%}
+        {% comment %} <li> <a href=" {% url "book-detail" book_id=book.id%}"> title : {{ book.title }} </a> rating : {{ book.rating }} </li> {% endcomment %}
+        <li> <a href=" {{book.get_absolute_url}}"> title : {{ book.title }} </a> rating : {{ book.rating }} </li>
+        {% endfor %}
+    </ul>
+    <hr> 
+    <p>total number of books {{ total_number_of_books }}</p>
+    <hr>
+    <p> average rating {{ average_rating.rating__avg}}</p>
+{% endblock  %}
+
+
